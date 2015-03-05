@@ -2,12 +2,13 @@
 #include "Errors.h"
 
 
-Game::Game()
+Game::Game() :
+	window(nullptr),
+	m_windowWidth(800),
+	m_windowHeight(600),
+	m_gameState(m_gameState::Play),
+	m_time(0.0f)
 {
-	window = nullptr;
-	m_windowWidth = 800;
-	m_windowHeight = 600;
-	m_gameState = m_gameState::Play;
 }
 
 
@@ -18,7 +19,7 @@ Game::~Game()
 void Game::Run()
 {
 	InitSystems();
-	m_sprite.InitSprite(-1.0f, -1.0f, 1.0f, 1.0f);
+	m_sprite.InitSprite(-0.75f, -0.75f, 1.5f, 1.5f);
 	GameLoop();
 }
 //initialize SDL, Glew, and OpenGL
@@ -58,6 +59,7 @@ void Game::InitShaders()
 {
 	m_shaderProgram.CompileShaders("Shaders/basicVertShader.vert", "Shaders/basicFragShader.frag");
 	m_shaderProgram.AddAttribute("vertexPosition");
+	m_shaderProgram.AddAttribute("vertexColor");
 	m_shaderProgram.LinkShaders();
 }
 
@@ -67,6 +69,7 @@ void Game::GameLoop()
 	while (m_gameState != m_gameState::Exit)
 	{
 		ProcessInput();
+		m_time += 0.05f;
 		RenderGame();
 	}
 }
@@ -103,6 +106,9 @@ void Game::RenderGame()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_shaderProgram.UseProgram();
+
+	GLuint timeLocation = m_shaderProgram.GetUniformLocation("time");
+	glUniform1f(timeLocation, m_time);
 
 	m_sprite.RenderSprite();
 	

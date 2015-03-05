@@ -1,6 +1,7 @@
 #pragma once
 #include "include\SDL2\glew.h"
 
+
 class Sprite
 {
 public:

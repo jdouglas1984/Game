@@ -26,6 +26,7 @@ private:
 	int m_windowHeight;
 	m_gameState m_gameState;
 	Sprite m_sprite;
+	float m_time;
 	GLSLProgram m_shaderProgram;
 };
 

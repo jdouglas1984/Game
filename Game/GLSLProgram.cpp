@@ -11,6 +11,19 @@ m_numAttributes(0), m_programID(0), m_vertexShaderID(0), m_fragmentShaderID(0)
 GLSLProgram::~GLSLProgram()
 {
 }
+
+GLuint GLSLProgram::GetUniformLocation(const std::string& uniformName)
+{
+	GLuint location = glGetUniformLocation(m_programID, uniformName.c_str());
+
+	if (location == GL_INVALID_INDEX)
+	{
+		FatalError("Failed to get " + uniformName + " location");
+	}
+
+	return location;
+}
+
 //compiles vertex and fragment shaders passed in as well as creates the program for glUseProgram()
 void GLSLProgram::CompileShaders(const std::string& vertexShaderFilePath, const std::string& fragmentShaderFilePath)
 {
