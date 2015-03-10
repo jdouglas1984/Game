@@ -14,7 +14,7 @@ public:
 	void AddAttribute(const std::string& attributeName);
 	void UseProgram();
 	void StopProgram();
-	GLuint GetUniformLocation(const std::string& uniformName);
+	GLint GetUniformLocation(const std::string& uniformName);
 
 private:
 	int m_numAttributes;

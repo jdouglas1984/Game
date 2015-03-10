@@ -5,6 +5,7 @@
 #include <string>
 #include "Sprite.h"
 #include "GLSLProgram.h"
+#include "GLTexture.h"
 
 enum class m_gameState{Play, Paused, Exit};
 
@@ -25,6 +26,7 @@ private:
 	int m_windowWidth;
 	int m_windowHeight;
 	m_gameState m_gameState;
+	GLTexture m_texture;
 	Sprite m_sprite;
 	float m_time;
 	GLSLProgram m_shaderProgram;

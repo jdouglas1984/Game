@@ -1,6 +1,6 @@
 #include "Game.h"
 #include "Errors.h"
-
+#include "ImageLoader.h"
 
 Game::Game() :
 	window(nullptr),
@@ -11,7 +11,6 @@ Game::Game() :
 {
 }
 
-
 Game::~Game()
 {
 }
@@ -19,7 +18,8 @@ Game::~Game()
 void Game::Run()
 {
 	InitSystems();
-	m_sprite.InitSprite(-0.75f, -0.75f, 1.5f, 1.5f);
+	m_sprite.InitSprite(0.35f, 0.5f, -0.35f, -0.5f);
+	m_texture = ImageLoader::LoadPng("Textures/Idle/frame-2.png");
 	GameLoop();
 }
 //initialize SDL, Glew, and OpenGL
@@ -60,6 +60,7 @@ void Game::InitShaders()
 	m_shaderProgram.CompileShaders("Shaders/basicVertShader.vert", "Shaders/basicFragShader.frag");
 	m_shaderProgram.AddAttribute("vertexPosition");
 	m_shaderProgram.AddAttribute("vertexColor");
+	m_shaderProgram.AddAttribute("vertexUV");
 	m_shaderProgram.LinkShaders();
 }
 
@@ -106,12 +107,18 @@ void Game::RenderGame()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_shaderProgram.UseProgram();
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_texture.id);
+	GLint textureLocation = m_shaderProgram.GetUniformLocation("playerTexture");
+	glUniform1i(textureLocation, 0);
 
-	GLuint timeLocation = m_shaderProgram.GetUniformLocation("time");
-	glUniform1f(timeLocation, m_time);
+	//GLuint timeLocation = m_shaderProgram.GetUniformLocation("time");
+	//glUniform1f(timeLocation, m_time);
 
 	m_sprite.RenderSprite();
 	
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 	m_shaderProgram.StopProgram();
 
 	//swaps buffers on window
