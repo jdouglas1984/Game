@@ -21,5 +21,5 @@ void main()
 	
 	fragmentColor = vertexColor;
 	
-	fragmentUV = vertexUV;
+	fragmentUV = vertexUV * vec2(1.0, -1.0);
 }
